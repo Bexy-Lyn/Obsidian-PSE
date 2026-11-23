@@ -1,13 +1,126 @@
+/* Hauptcontainer */
 .pse-container {
   width: 100%;
   overflow-x: auto;
-  color: var(--text-normal);
+  padding: 12px 0;
 }
 
-.pse-placeholder {
-  padding: 24px;
+/* Klassisches 18-Spalten-Raster */
+.pse-grid {
+  display: grid;
+  grid-template-columns: repeat(18, 64px);
+  grid-template-rows: repeat(7, 78px);
+  gap: 3px;
+  width: max-content;
+  padding: 4px;
+}
+
+/* Elementkacheln */
+.pse-element {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+
+  color: #17252b;
+  cursor: default;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.pse-element:hover,
+.pse-element:focus-visible {
+  z-index: 2;
+  filter: brightness(1.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 1px;
+}
+
+/* Ordnungszahl */
+.pse-element-number {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* Elementsymbol */
+.pse-element-symbol {
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 650;
+}
+
+/* Elementname */
+.pse-element-name {
+  max-width: 100%;
+  margin-top: 3px;
+  font-size: 9px;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Atommasse */
+.pse-element-mass {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 9px;
+}
+
+/* Schwebender Tooltip */
+.pse-tooltip {
+  position: fixed;
+  z-index: 10000;
+  width: max-content;
+  max-width: min(300px, calc(100vw - 16px));
+  padding: 12px;
+
+  background: var(--background-primary);
+  color: var(--text-normal);
   border: 1px solid var(--background-modifier-border);
   border-radius: 8px;
-  text-align: center;
-  color: var(--pse-base-color);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
+
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.pse-tooltip[hidden] {
+  display: none;
+}
+
+.pse-tooltip-heading {
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.pse-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 3px 0;
+}
+
+.pse-tooltip-label {
+  color: var(--text-muted);
+}
+
+.pse-tooltip-value {
+  font-weight: 500;
+  text-align: right;
 }
