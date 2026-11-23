@@ -1,0 +1,33 @@
+{
+  "properties": {
+    "atomicNumber": "Atomic number",
+    "atomicMass": "Atomic mass",
+    "electronegativity": "Electronegativity (Pauling)",
+    "meltingPoint": "Melting point",
+    "boilingPoint": "Boiling point",
+    "electronConfiguration": "Electron configuration",
+    "oxidationStates": "Oxidation states",
+    "atomicRadius": "Atomic radius",
+    "ionizationEnergy": "1st ionization energy",
+    "category": "Element category",
+    "group": "Group",
+    "period": "Period"
+  },
+  "categories": {
+    "alkali": "Alkali metals",
+    "alkaline-earth": "Alkaline earth metals",
+    "transition": "Transition metals",
+    "post-transition": "Post-transition metals",
+    "metalloid": "Metalloids",
+    "nonmetal": "Nonmetals",
+    "halogen": "Halogens",
+    "noble-gas": "Noble gases",
+    "lanthanide": "Lanthanides",
+    "actinide": "Actinides"
+  },
+  "ui": {
+    "close": "Close",
+    "details": "Element details",
+    "unknown": "Not available"
+  }
+}

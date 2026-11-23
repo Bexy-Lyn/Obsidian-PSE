@@ -50,8 +50,9 @@ export function getCategoryColor(
   baseColor: string,
   category: ElementCategory,
 ): string {
-  const [hue, saturation] = hexToHsl(baseColor);
+  const [hue, saturation, lightness] = hexToHsl(baseColor);
+
   const shiftedHue = (hue + HUE_SHIFTS[category] + 360) % 360;
 
-  return `hsl(${shiftedHue}, ${Math.min(saturation, 55)}%, 68%)`;
+  return `hsl(${shiftedHue}, ${saturation}%, ${lightness}%)`;
 }

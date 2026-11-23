@@ -1,10 +1,17 @@
 import { ELEMENTS, type ChemicalElement } from "../data/elements";
 import { getCategoryColor } from "../utils/colors";
+import { getElementPosition } from "../utils/layout";
+import {
+  getPSELanguage,
+  getElementName,
+  getCategoryName,
+  translate,
+  formatPSEValue,
+  formatAtomicMass,
+} from "../i18n";
 
 function formatNumber(value: number): string {
-  return value.toLocaleString("de-DE", {
-    maximumFractionDigits: 4,
-  });
+  return formatPSEValue(value);
 }
 
 function addProperty(
@@ -34,20 +41,30 @@ function fillTooltip(tooltip: HTMLElement, element: ChemicalElement): void {
 
   tooltip.createDiv({
     cls: "pse-tooltip-heading",
-    text: `${element.name} (${element.symbol})`,
+    text: `${getElementName(element)} (${element.symbol})`,
   });
-
-  addProperty(tooltip, "Ordnungszahl", String(element.number));
 
   addProperty(
     tooltip,
-    "Atommasse",
-    element.mass == null ? null : `${formatNumber(element.mass)} u`,
+    translate("properties", "atomicNumber"),
+    String(element.number),
   );
 
   addProperty(
     tooltip,
-    "Elektronegativität (Pauling)",
+    translate("properties", "atomicMass"),
+    element.mass == null ? null : `${element.mass} u`,
+  );
+
+  addProperty(
+    tooltip,
+    translate("properties", "category"),
+    getCategoryName(element.category),
+  );
+
+  addProperty(
+    tooltip,
+    translate("properties", "electronegativity"),
     element.electronegativity == null
       ? null
       : formatNumber(element.electronegativity),
@@ -55,7 +72,7 @@ function fillTooltip(tooltip: HTMLElement, element: ChemicalElement): void {
 
   addProperty(
     tooltip,
-    "Schmelzpunkt",
+    translate("properties", "meltingPoint"),
     element.meltingPoint == null
       ? null
       : `${formatNumber(element.meltingPoint)} °C`,
@@ -63,7 +80,7 @@ function fillTooltip(tooltip: HTMLElement, element: ChemicalElement): void {
 
   addProperty(
     tooltip,
-    "Siedepunkt",
+    translate("properties", "boilingPoint"),
     element.boilingPoint == null
       ? null
       : `${formatNumber(element.boilingPoint)} °C`,
@@ -71,8 +88,30 @@ function fillTooltip(tooltip: HTMLElement, element: ChemicalElement): void {
 
   addProperty(
     tooltip,
-    "Elektronenkonfiguration",
+    translate("properties", "electronConfiguration"),
     element.electronConfiguration,
+  );
+
+  addProperty(
+    tooltip,
+    translate("properties", "oxidationStates"),
+    element.oxidationStates,
+  );
+
+  addProperty(
+    tooltip,
+    translate("properties", "atomicRadius"),
+    element.atomicRadius == null
+      ? null
+      : `${formatNumber(element.atomicRadius)} pm`,
+  );
+
+  addProperty(
+    tooltip,
+    translate("properties", "ionizationEnergy"),
+    element.ionizationEnergy == null
+      ? null
+      : `${formatNumber(element.ionizationEnergy)} eV`,
   );
 }
 
@@ -90,7 +129,7 @@ export function renderDefaultView(
 
   tooltip.setAttribute("role", "tooltip");
   tooltip.hidden = true;
-
+  let pinnedTile: HTMLElement | null = null;
   let activeTile: HTMLElement | null = null;
 
   function positionTooltip(tile: HTMLElement): void {
@@ -114,31 +153,89 @@ export function renderDefaultView(
     tooltip.style.top = `${top}px`;
   }
 
-  function showTooltip(tile: HTMLElement, element: ChemicalElement): void {
+  function closeTooltip(): void {
+    pinnedTile = null;
+    activeTile = null;
+    tooltip.hidden = true;
+    tooltip.classList.remove("pse-tooltip-pinned");
+  }
+
+  function showTooltip(
+    tile: HTMLElement,
+    element: ChemicalElement,
+    pinned = false,
+  ): void {
+    if (pinnedTile && !pinned) return;
+
     activeTile = tile;
+
+    if (pinned) {
+      pinnedTile = tile;
+    }
+
     fillTooltip(tooltip, element);
+
     tooltip.hidden = false;
-    positionTooltip(tile);
+    tooltip.classList.toggle("pse-tooltip-pinned", pinned);
+
+    if (!pinned) {
+      positionTooltip(tile);
+    }
   }
 
   function hideTooltip(tile: HTMLElement): void {
-    if (activeTile !== tile) return;
+    if (pinnedTile || activeTile !== tile) return;
 
     activeTile = null;
     tooltip.hidden = true;
   }
+
+  const onPointerDown = (event: PointerEvent) => {
+    if (!pinnedTile) return;
+
+    const target = event.target;
+
+    if (
+      target instanceof Node &&
+      !tooltip.contains(target) &&
+      !grid.contains(target)
+    ) {
+      closeTooltip();
+    }
+  };
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      closeTooltip();
+    }
+  };
 
   for (const element of ELEMENTS) {
     const tile = grid.createDiv({
       cls: "pse-element",
       attr: {
         tabindex: "0",
-        "aria-label": `${element.name}, Ordnungszahl ${element.number}`,
+        "aria-label": `${getElementName(element)}, ${translate(
+          "properties",
+          "atomicNumber",
+        )} ${element.number}`,
       },
     });
 
-    tile.style.gridColumn = String(element.group);
-    tile.style.gridRow = String(element.period);
+    tile.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      if (pinnedTile === tile) {
+        closeTooltip();
+      } else {
+        showTooltip(tile, element, true);
+      }
+    });
+
+    const position = getElementPosition(element);
+
+    tile.style.gridColumn = String(position.column);
+    tile.style.gridRow = String(position.row);
 
     tile.style.backgroundColor = getCategoryColor(baseColor, element.category);
 
@@ -154,12 +251,12 @@ export function renderDefaultView(
 
     tile.createDiv({
       cls: "pse-element-name",
-      text: element.name,
+      text: getElementName(element),
     });
 
     tile.createDiv({
       cls: "pse-element-mass",
-      text: element.mass == null ? "—" : formatNumber(element.mass),
+      text: formatAtomicMass(element.mass),
     });
 
     tile.addEventListener("mouseenter", () => {
@@ -178,20 +275,26 @@ export function renderDefaultView(
       hideTooltip(tile);
     });
 
-    //tile.setAttribute("aria-describedby", "pse-element-tooltip");
+    tile.setAttribute("aria-describedby", "pse-element-tooltip");
   }
 
   const reposition = () => {
-    if (activeTile) positionTooltip(activeTile);
+    if (activeTile && !pinnedTile) {
+      positionTooltip(activeTile);
+    }
   };
 
   window.addEventListener("resize", reposition);
   window.addEventListener("scroll", reposition, true);
+  document.addEventListener("pointerdown", onPointerDown);
+  document.addEventListener("keydown", onKeyDown);
 
   // Cleanup-Funktion für den Obsidian-Lebenszyklus
   return () => {
     window.removeEventListener("resize", reposition);
     window.removeEventListener("scroll", reposition, true);
+    document.removeEventListener("pointerdown", onPointerDown);
+    document.removeEventListener("keydown", onKeyDown);
     tooltip.remove();
   };
 }
