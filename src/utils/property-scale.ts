@@ -53,3 +53,32 @@ export function createPropertyScale(
 
   return { getColor, isInactive, min, max };
 }
+
+import { formatPSEValue } from "../i18n";
+
+export function formatPropertyValue(
+  element: ChemicalElement,
+  property: NumericProperty,
+): string {
+  const value = element[property];
+
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return "—";
+  }
+
+  const formatted = formatPSEValue(value);
+
+  switch (property) {
+    case "atomicRadius":
+      return `${formatted} pm`;
+
+    case "electronegativity":
+      return formatted;
+
+    case "electronAffinity":
+      return `${formatted} eV`;
+
+    case "ionizationEnergy":
+      return `${formatted} eV`;
+  }
+}

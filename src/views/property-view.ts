@@ -1,5 +1,10 @@
 import { renderSimpleGrid } from "./simple-grid";
-import { createPropertyScale } from "../utils/property-scale";
+
+import {
+  createPropertyScale,
+  formatPropertyValue,
+} from "../utils/property-scale";
+
 import type { NumericProperty } from "../utils/property-scale";
 
 export function renderPropertyView(
@@ -12,5 +17,7 @@ export function renderPropertyView(
   renderSimpleGrid(container, {
     getColor: scale.getColor,
     isInactive: scale.isInactive,
+
+    getLabel: (element) => formatPropertyValue(element, property),
   });
 }

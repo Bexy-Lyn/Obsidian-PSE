@@ -1,10 +1,10 @@
 import { ELEMENTS } from "../data/elements";
 import type { ChemicalElement } from "../data/elements";
 import { getElementPosition } from "../utils/layout";
-import { getElementName, formatAtomicMass } from "../i18n";
 
 export interface SimpleGridOptions {
   getColor: (element: ChemicalElement) => string;
+  getLabel: (element: ChemicalElement) => string;
   isInactive?: (element: ChemicalElement) => boolean;
 }
 
@@ -46,13 +46,8 @@ export function renderSimpleGrid(
     });
 
     tile.createDiv({
-      cls: "pse-element-name",
-      text: getElementName(element),
-    });
-
-    tile.createDiv({
-      cls: "pse-element-mass",
-      text: formatAtomicMass(element.mass),
+      cls: "pse-element-value",
+      text: options.getLabel(element),
     });
   }
 }

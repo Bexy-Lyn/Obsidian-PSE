@@ -27,3 +27,21 @@ export function getElectronBlock(element: ChemicalElement): ElectronBlock {
 
   return "p";
 }
+
+export function getBlockOrbitalLabel(element: ChemicalElement): string {
+  const block = getElectronBlock(element);
+
+  switch (block) {
+    case "s":
+      return `${element.period}s`;
+
+    case "p":
+      return `${element.period}p`;
+
+    case "d":
+      return `${element.period - 1}d`;
+
+    case "f":
+      return `${element.period - 2}f`;
+  }
+}

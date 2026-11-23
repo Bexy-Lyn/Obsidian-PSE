@@ -16,19 +16,17 @@
 }
 
 /* Elementkacheln */
+
 .pse-element {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
   min-width: 0;
   padding: 4px;
+
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
 
   cursor: default;
+
   transition:
     transform 120ms ease,
     filter 120ms ease,
@@ -64,20 +62,37 @@
 }
 
 /* Elementsymbol */
+
+/* Element symbol: identical position in every view */
 .pse-element-symbol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   font-size: 26px;
   line-height: 1;
   font-weight: 650;
+  white-space: nowrap;
 }
 
 /* Elementname */
-.pse-element-name {
-  max-width: 100%;
-  margin-top: 3px;
-  font-size: 9px;
+
+/* Bottom label: element name or property value */
+.pse-element-name,
+.pse-element-value {
+  position: absolute;
+  bottom: 6px;
+  left: 2px;
+  right: 2px;
+
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
   line-height: 1.2;
   text-align: center;
   overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Atommasse */
@@ -170,6 +185,9 @@
   .pse-element {
     cursor: pointer;
   }
+  .pse-simple-element {
+    cursor: default;
+  }
 }
 
 /* Simple views have no hover tooltip or click behavior. */
@@ -229,4 +247,16 @@
 
 .pse-view-content {
   min-width: 0;
+}
+
+/* Simple views: keep the element symbol centered */
+.pse-simple-element {
+  position: relative;
+  cursor: default;
+}
+
+/* No interactive hover effect in simple views */
+.pse-simple-element:hover {
+  transform: none;
+  box-shadow: none;
 }
