@@ -1,4 +1,3 @@
-
 {
   "elements": {
     "H": "Wasserstoff",
@@ -150,5 +149,13 @@
     "close": "Schließen",
     "details": "Elementdetails",
     "unknown": "Nicht verfügbar"
+  },
+  "views": {
+    "default": "Standard",
+    "blocks": "Elektronenblöcke",
+    "atomic-radius": "Atomradius",
+    "electronegativity": "Elektronegativität",
+    "electron-affinity": "Elektronenaffinität",
+    "ionization-energy": "Ionisierungsenergie"
   }
 }

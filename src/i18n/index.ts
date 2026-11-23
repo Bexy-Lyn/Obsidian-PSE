@@ -4,7 +4,7 @@ import de from "./de.json";
 
 import type { ChemicalElement, ElementCategory } from "../data/elements";
 
-type TranslationSection = "properties" | "categories" | "ui";
+type TranslationSection = "properties" | "categories" | "ui" | "views";
 
 type TranslationKey<S extends TranslationSection> = keyof (typeof en)[S];
 

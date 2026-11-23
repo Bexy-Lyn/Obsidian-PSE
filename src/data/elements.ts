@@ -22,6 +22,7 @@ export interface ChemicalElement {
   period: number;
   category: ElementCategory;
 
+  electronAffinity?: number | null;
   electronegativity?: number | null;
   meltingPoint?: number | null;
   boilingPoint?: number | null;

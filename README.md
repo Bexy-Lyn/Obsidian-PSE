@@ -11,6 +11,12 @@ Example
 ````
 	```pse
 	color: '#167474'
-	views: ['default']
+	views:
+	- default
+	- blocks
+	- atomic-radius
+	- electronegativity
+	- electron-affinity
+	- ionization-energy
 	```
 ````

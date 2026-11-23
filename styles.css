@@ -171,3 +171,62 @@
     cursor: pointer;
   }
 }
+
+/* Simple views have no hover tooltip or click behavior. */
+.pse-simple-element {
+  cursor: default;
+}
+
+/* Missing property values */
+.pse-simple-element.pse-element-inactive {
+  opacity: 0.35;
+  background-color: #909090 !important;
+}
+
+/* Text follows the active Obsidian theme. */
+.theme-light .pse-simple-element {
+  color: #17252b;
+}
+
+.theme-dark .pse-simple-element {
+  color: #ffffff;
+}
+
+.pse-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.75rem;
+  scrollbar-width: thin;
+}
+
+.pse-tab {
+  flex: 0 0 auto;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-s);
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pse-tab:hover {
+  color: var(--text-normal);
+  background: var(--background-modifier-hover);
+}
+
+.pse-tab.is-active {
+  color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  background: var(--background-primary);
+}
+
+.pse-tab:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.pse-view-content {
+  min-width: 0;
+}

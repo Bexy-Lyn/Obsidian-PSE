@@ -56,3 +56,20 @@ export function getCategoryColor(
 
   return `hsl(${shiftedHue}, ${saturation}%, ${lightness}%)`;
 }
+
+import type { ElectronBlock } from "./blocks";
+
+const BLOCK_HUE_SHIFTS: Record<ElectronBlock, number> = {
+  s: -105,
+  p: 45,
+  d: 0,
+  f: 155,
+};
+
+export function getBlockColor(baseColor: string, block: ElectronBlock): string {
+  const [hue, saturation, lightness] = hexToHsl(baseColor);
+
+  const shiftedHue = (hue + BLOCK_HUE_SHIFTS[block] + 360) % 360;
+
+  return `hsl(${shiftedHue}, ${saturation}%, ${lightness}%)`;
+}

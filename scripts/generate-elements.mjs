@@ -136,6 +136,7 @@ const elements = rows.map((row) => {
     mass: optionalString(source.AtomicWeight),
     ...position,
     category: getCategory(number, source.GroupBlock),
+    electronAffinity: optionalNumber(source.ElectronAffinity),
     electronegativity: optionalNumber(source.Electronegativity),
     meltingPoint: kelvinToCelsius(source.MeltingPoint),
     boilingPoint: kelvinToCelsius(source.BoilingPoint),

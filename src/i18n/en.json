@@ -29,5 +29,13 @@
     "close": "Close",
     "details": "Element details",
     "unknown": "Not available"
+  },
+  "views": {
+    "default": "Default",
+    "blocks": "Electron blocks",
+    "atomic-radius": "Atomic radius",
+    "electronegativity": "Electronegativity",
+    "electron-affinity": "Electron affinity",
+    "ionization-energy": "Ionization energy"
   }
 }
